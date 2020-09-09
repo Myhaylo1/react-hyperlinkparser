@@ -3,14 +3,7 @@ import styles from './Table.module.scss';
 
 class Table extends Component {
   render() {
-    let { htmlText } = this.props;
-    let regExp = /<a.*?href="((?:[\w]*:\/\/)?(?:[\w-_]+\.)+\w+.*?)".*?>([^<].*?)<\/.*?/g;
-    let s;
-    let arrayValue = [];
-    do {
-      s = regExp.exec(htmlText);
-      if (s) arrayValue.push([s[1], s[2]]);
-    } while (regExp.lastIndex);
+    let { arrayValue } = this.props;
     const table = arrayValue.map(function (item) {
       return (
         <tr key={item} >

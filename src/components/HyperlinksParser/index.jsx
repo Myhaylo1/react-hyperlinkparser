@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import Form from './Form';
 import Table from './Table';
+const regExp = /<a.*?href="(?<url>(?:[\w]*:\/\/)?(?:[\w-_]+\.)+\w+.*?)".*?>(?<caption>[^<].*?)<\/.*?/g
 
 class HyperlinksParser extends Component {
   constructor(props) {
     super(props);
     this.state = {
       error: null,
-      htmlText: '',
       isFetching: false,
+      arrayValue: []
     };
+  }
+
+  parseHTML = htmlText => {
+    const allMatch = htmlText?.matchAll(regExp);
+    const arrayValue = [];
+    for (const item of allMatch) {
+      arrayValue.push([item.groups.url, item.groups.caption]);
+    }
+    return arrayValue;
   }
 
   loadHtmlText = url => {
@@ -20,7 +30,7 @@ class HyperlinksParser extends Component {
       .then(response => response.text())
       .then(data => {
         this.setState({
-          htmlText: data,
+          arrayValue: this.parseHTML(data),
         });
       })
       .catch(error => {
@@ -35,12 +45,12 @@ class HyperlinksParser extends Component {
   };
 
   render() {
-    const { htmlText } = this.state;
+    let { arrayValue } = this.state;
     return (
       <article>
         <Form onSubmit={this.handleSubmit} />
         <section>
-          <Table htmlText={htmlText} />
+          <Table arrayValue={arrayValue} />
         </section>
       </article>
     );
