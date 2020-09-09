@@ -18,11 +18,13 @@ class Table extends Component {
           <col className={styles.tableCol} />
           <col className={styles.tableCol} />
         </colgroup>
-        <tbody>
+        <thead>
           <tr>
             <th className={styles.tableCell}>Hyperlink value</th>
             <th className={styles.tableCell}>Link label</th>
           </tr>
+        </thead>
+        <tbody>
           {table}
         </tbody>
       </table >
